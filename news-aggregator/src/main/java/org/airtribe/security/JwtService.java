@@ -17,7 +17,7 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("$jwt.expiration")
+    @Value("${jwt.expiration}")
     private long jwtExpiration;
 
     private Key signingKey;
@@ -38,12 +38,21 @@ public class JwtService {
 
     public String extractUserName(String token) {
         return Jwts.parserBuilder().setSigningKey(signingKey)
-                .build().parseClaimsJwt(token).getBody().getSubject();
+                .build().parseClaimsJws(token).getBody().getSubject();
     }
+
+    public Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJwt(token);
+            Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token);
             return true;
         }
         catch (ExpiredJwtException ex) {
