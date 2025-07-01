@@ -7,6 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -42,8 +45,18 @@ public class NewsService {
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
         queryParams.forEach(builder::queryParam);
 
-        URI uri = builder.build().encode().toUri();
-        NewsArticlesResponse response = restTemplate.getForObject(uri, NewsArticlesResponse.class);
-        return response;
+        try {
+            URI uri = builder.build().encode().toUri();
+            NewsArticlesResponse response = restTemplate.getForObject(uri, NewsArticlesResponse.class);
+            return response;
+        }
+        catch (HttpClientErrorException | HttpServerErrorException ex) {
+            LOGGER.error("Error occurred while making api call : {}" , ex.getLocalizedMessage());
+            throw ex;
+        }
+        catch (RestClientException ex) {
+            LOGGER.error("Generic Client Exception during api call : {}", ex.getMessage());
+            throw ex;
+        }
     }
 }

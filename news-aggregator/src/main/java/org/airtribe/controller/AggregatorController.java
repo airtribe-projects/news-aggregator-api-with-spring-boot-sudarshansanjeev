@@ -8,6 +8,8 @@ import org.airtribe.service.AggregatorService;
 import org.airtribe.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 @RestController
 @RequestMapping("api/aggregator")
@@ -32,5 +34,10 @@ public class AggregatorController {
     @PostMapping("/news")
     public NewsArticlesResponse fetchNews(@RequestBody NewsSearchRequest request) {
         return newsService.fetchNewsArticles(request);
+    }
+
+    @ExceptionHandler({HttpClientErrorException.class, HttpServerErrorException.class})
+    public String handleHttpExceptions(RuntimeException ex) {
+        return "External api error : " + ex.getMessage();
     }
 }
