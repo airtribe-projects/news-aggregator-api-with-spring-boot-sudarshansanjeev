@@ -1,11 +1,11 @@
 package org.airtribe.service;
 
 import org.airtribe.config.NewsApiProperties;
+import org.airtribe.enums.SupportedLanguages;
 import org.airtribe.model.NewsArticlesResponse;
 import org.airtribe.model.request.NewsSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -14,8 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class NewsService {
@@ -58,5 +61,9 @@ public class NewsService {
             LOGGER.error("Generic Client Exception during api call : {}", ex.getMessage());
             throw ex;
         }
+    }
+
+    public List<String> getSupportedLanguages() {
+        return Arrays.stream(SupportedLanguages.values()).map(lang -> lang.getCode() + " : " + lang.getLanguage()).collect(Collectors.toList());
     }
 }

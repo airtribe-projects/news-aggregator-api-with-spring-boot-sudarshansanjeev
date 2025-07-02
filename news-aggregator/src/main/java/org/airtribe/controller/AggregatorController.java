@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/aggregator")
 public class AggregatorController {
@@ -35,6 +37,12 @@ public class AggregatorController {
     public NewsArticlesResponse fetchNews(@RequestBody NewsSearchRequest request) {
         return newsService.fetchNewsArticles(request);
     }
+
+    @GetMapping("/supportedLanguages")
+    public List<String> getSupportedLanguages() {
+        return newsService.getSupportedLanguages();
+    }
+
 
     @ExceptionHandler({HttpClientErrorException.class, HttpServerErrorException.class})
     public String handleHttpExceptions(RuntimeException ex) {
