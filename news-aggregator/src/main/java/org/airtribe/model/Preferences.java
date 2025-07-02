@@ -61,4 +61,15 @@ public class Preferences {
     public void setRegion(List<String> region) {
         this.region = region;
     }
+
+    @Override
+    public String toString() {
+        return "Preferences{" +
+                "id=" + id +
+                ", user=" + user +
+                ", topics=" + topics +
+                ", language=" + language +
+                ", region=" + region +
+                '}';
+    }
 }

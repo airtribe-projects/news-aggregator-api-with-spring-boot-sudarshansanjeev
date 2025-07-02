@@ -30,6 +30,7 @@ public class AggregatorService {
         userPreference.setTopics(request.getPreferences());
         userPreference.setRegion(request.getRegions());
         userPreference.setLanguage(request.getLanguages());
+        LOGGER.info("Updated user preferences : {}", userPreference);
         return preferenceRepository.save(userPreference);
     }
 

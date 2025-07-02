@@ -38,6 +38,11 @@ public class AggregatorController {
         return newsService.fetchNewsArticles(request);
     }
 
+    @GetMapping("/news")
+    public NewsArticlesResponse fetchNewsBasedOnSavedUserPreferences() {
+        return newsService.fetchNewsBasedOnPreferences();
+    }
+
     @GetMapping("/supportedLanguages")
     public List<String> getSupportedLanguages() {
         return newsService.getSupportedLanguages();
