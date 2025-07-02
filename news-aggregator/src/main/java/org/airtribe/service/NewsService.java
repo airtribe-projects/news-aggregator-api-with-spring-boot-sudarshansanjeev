@@ -14,10 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,5 +62,15 @@ public class NewsService {
 
     public List<String> getSupportedLanguages() {
         return Arrays.stream(SupportedLanguages.values()).map(lang -> lang.getCode() + " : " + lang.getLanguage()).collect(Collectors.toList());
+    }
+
+    public List<String> getCountries() {
+        List<String> countryCodes = new ArrayList<>();
+        for(String code : Locale.getISOCountries()) {
+            Locale locale = new Locale("", code);
+            String countryName = locale.getDisplayName();
+            countryCodes.add(code + " => " + countryName);
+        }
+        return countryCodes;
     }
 }

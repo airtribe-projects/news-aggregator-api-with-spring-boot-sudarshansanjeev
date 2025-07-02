@@ -24,7 +24,7 @@ public class AggregatorController {
     NewsService newsService;
 
     @PutMapping("/preferences")
-    public Preferences savePreferences(PreferenceRequest preferenceRequest) {
+    public Preferences savePreferences(@RequestBody PreferenceRequest preferenceRequest) {
         return aggregatorService.updatePreferences(preferenceRequest);
     }
 
@@ -41,6 +41,11 @@ public class AggregatorController {
     @GetMapping("/supportedLanguages")
     public List<String> getSupportedLanguages() {
         return newsService.getSupportedLanguages();
+    }
+
+    @GetMapping("/countries")
+    public List<String> getISOCountries() {
+        return newsService.getCountries();
     }
 
 
